@@ -1,0 +1,59 @@
+
+PLAY [network] *****************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [leaf02]
+ok: [leaf01]
+
+TASK [copy interfaces] *********************************************************
+ok: [leaf02]
+ok: [leaf01]
+
+TASK [copy FRR daemons] ********************************************************
+ok: [leaf01]
+ok: [leaf02]
+
+TASK [copy FRR conf] ***********************************************************
+ok: [leaf01]
+ok: [leaf02]
+
+TASK [reload networking] *******************************************************
+changed: [leaf02]
+changed: [leaf01]
+
+TASK [reload frr] **************************************************************
+changed: [leaf02]
+changed: [leaf01]
+
+PLAY [server] ******************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [server02]
+ok: [server01]
+
+TASK [install ifenslave package] ***********************************************
+ok: [server01] => (item=[u'ifenslave-2.6'])
+ok: [server02] => (item=[u'ifenslave-2.6'])
+
+TASK [Setup bonding module in Kernel] ******************************************
+changed: [server01]
+changed: [server02]
+
+TASK [copy interfaces] *********************************************************
+ok: [server01]
+ok: [server02]
+
+TASK [restarts servers with their new configuration] ***************************
+changed: [server01]
+changed: [server02]
+
+TASK [Wait for everything to come back up] *************************************
+ok: [server02 -> localhost]
+ok: [server01 -> localhost]
+
+PLAY RECAP *********************************************************************
+leaf01                     : ok=6    changed=2    unreachable=0    failed=0   
+leaf02                     : ok=6    changed=2    unreachable=0    failed=0   
+server01                   : ok=6    changed=2    unreachable=0    failed=0   
+server02                   : ok=6    changed=2    unreachable=0    failed=0   
+
